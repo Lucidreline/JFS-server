@@ -3,5 +3,6 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     semi: ['error', 'never'],
+    'no-underscore-dangle': 'off',
   },
 }
