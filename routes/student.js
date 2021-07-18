@@ -7,10 +7,10 @@ const router = express.Router()
 // @desc creates single new student in datebase
 // @ access private (admin)
 router.post('/new-student', async (req, res) => {
-  const { name, wallet } = req.body
+  const { basicInfo, districtID } = req.body
   const newStudent = new Student({
-    name,
-    wallet,
+    basicInfo,
+    districtID,
   })
 
   await newStudent.save()
