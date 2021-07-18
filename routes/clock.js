@@ -1,10 +1,18 @@
 const express = require('express')
 const Student = require('../models/student')
+const Clock = require('../models/clock')
 
 const router = express.Router()
 
 const clockIn = async (student) => {
   const currentStudent = student
+
+  const clock = new Clock({
+    start: Date.now(),
+  })
+
+  currentStudent.clock.history.append(clock)
+
   currentStudent.clock.isClockedIn = true
 
   await student.save()
@@ -13,6 +21,11 @@ const clockIn = async (student) => {
 const clockOut = async (student) => {
   const currentStudent = student
   currentStudent.clock.isClockedIn = false
+
+  // take the most recent clockIn and add a clock out time
+  currentStudent.clock.history[currentStudent.clock.history.length - 1].end =
+    Date.now()
+
   await student.save()
 }
 
