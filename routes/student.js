@@ -14,7 +14,7 @@ router.post('/new-student', async (req, res) => {
   })
 
   await newStudent.save()
-  res.send(newStudent)
+  res.status(201).send(newStudent)
 })
 
 module.exports = router

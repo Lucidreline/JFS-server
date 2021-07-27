@@ -6,7 +6,7 @@ const router = express.Router()
 
 const formatTime = (milliseconds) => new Date(milliseconds).toLocaleString()
 
-const clockIn = (student) => {
+const clockIn = (student, res) => {
   // eslint-disable-next-line no-async-promise-executor
   const promise = new Promise(async (resolve, reject) => {
     try {
@@ -30,13 +30,13 @@ const clockIn = (student) => {
       )
       resolve(await currentStudent.save())
     } catch (err) {
-      reject(err)
+      reject(res.status(500).json({ error: err.message }))
     }
   })
   return promise
 }
 
-const clockOut = (student) => {
+const clockOut = (student, res) => {
   const promise = new Promise(async (resolve, reject) => {
     try {
       const currentStudent = student
@@ -58,7 +58,7 @@ const clockOut = (student) => {
       )
       resolve(currentStudent.save())
     } catch (err) {
-      reject(err)
+      reject(res.status(500).json({ error: err.message }))
     }
   })
 
@@ -74,12 +74,18 @@ router.post('/chip-reader', async (req, res) => {
 
   const foundStudent = await Student.findOne({ districtID })
 
-  if (foundStudent == null)
-    console.log('⚠️ Was not able to find a student with that Distric ID')
-  else if (foundStudent.clock.isClockedIn === false) await clockIn(foundStudent)
-  else await clockOut(foundStudent)
+  if (foundStudent == null) {
+    console.log(`⚠️ Not able to find a student with Distric ID ${districtID}.`)
+    return res.status(404).json({
+      err: `Not able to find a student with Distric ID ${districtID}.`,
+    })
+  }
 
-  res.send(foundStudent)
+  // checks if student needs to be clocked in or out
+  if (foundStudent.clock.isClockedIn === false) await clockIn(foundStudent, res)
+  else await clockOut(foundStudent, res)
+
+  return res.send(foundStudent)
 })
 
 module.exports = router
