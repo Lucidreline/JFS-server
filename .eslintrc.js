@@ -4,5 +4,6 @@ module.exports = {
   rules: {
     semi: ['error', 'never'],
     'no-underscore-dangle': 'off',
+    'no-async-promise-executor': 'off',
   },
 }
