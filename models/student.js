@@ -39,12 +39,14 @@ const studentSchema = new mongoose.Schema({
 
   clock: {
     isClockedIn: { type: Boolean, required: true, default: false },
-    history: {
-      // history of all the times that the student has clocked in/out
-      type: [mongoose.Schema.Types.ObjectId],
-      required: true,
-      default: [],
-    },
+    history: [
+      {
+        // history of all the times that the student has clocked in/out
+        type: [mongoose.Schema.Types.ObjectId],
+        required: true,
+        default: [],
+      },
+    ],
   },
 
   wallet: { type: Number, required: true, default: 0 },
