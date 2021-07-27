@@ -4,7 +4,7 @@ const Student = require('../models/student')
 const router = express.Router()
 
 // @route POST /api/new-student
-// @desc creates single new student in datebase
+// @desc creates single new student in database
 // @ access private (admin)
 router.post('/new-student', async (req, res) => {
   const { basicInfo, districtID } = req.body
