@@ -1,6 +1,8 @@
 const express = require('express')
 const Student = require('../models/student')
 
+const formatCsvStudents = require('../utils/formatCsvStudents')
+
 const router = express.Router()
 
 // @route POST /api/new-student
@@ -21,9 +23,10 @@ router.post('/new-student', async (req, res) => {
 // @desc creates multiple students in database
 // @ access private (admin)
 router.post('/new-students', async (req, res) => {
-  console.log(req.body)
+  const rawStudents = req.body.data
+  const formattedCsvStudents = formatCsvStudents(rawStudents)
 
-  res.status(201).send('yas thank u')
+  res.status(201).json(formattedCsvStudents)
 })
 
 module.exports = router
