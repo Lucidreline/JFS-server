@@ -26,7 +26,9 @@ router.post('/new-students', async (req, res) => {
   const rawStudents = req.body.data
   const formattedCsvStudents = formatCsvStudents(rawStudents)
 
-  res.status(201).json(formattedCsvStudents)
+  Student.create(formattedCsvStudents)
+    .then(() => res.status(201).json(formattedCsvStudents))
+    .catch((err) => res.status(500).json({ err }))
 })
 
 module.exports = router

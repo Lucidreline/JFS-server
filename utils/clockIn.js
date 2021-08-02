@@ -21,6 +21,7 @@ const clockIn = (student, res) => {
 
       // print results
       const formattedTime = new Date(clockInTime).toLocaleString()
+      // eslint-disable-next-line no-console
       console.log(
         `➡️ ${currentStudent.basicInfo.name.first} clocked in at ${formattedTime}`,
       )
