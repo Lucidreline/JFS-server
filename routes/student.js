@@ -9,7 +9,7 @@ const router = express.Router()
 // @desc creates single new student in database
 // @ access private (admin)
 router.post('/new-student', async (req, res) => {
-  const { basicInfo, districtID } = req.body
+  const { basicInfo, districtID } = req.body // TODO use formatCsvStudents
   const newStudent = new Student({
     basicInfo,
     districtID,
@@ -17,12 +17,14 @@ router.post('/new-student', async (req, res) => {
 
   await newStudent.save()
   res.status(201).send(newStudent) // FIXME have this return json
+  // TODO add .next and .catch just like on /api/new-students
 })
 
 // @route POST /api/new-students
 // @desc creates multiple students in database
 // @ access private (admin)
 router.post('/new-students', async (req, res) => {
+  // TODO test without async just to make sure you can remove it
   const rawStudents = req.body.data
   const formattedCsvStudents = formatCsvStudents(rawStudents)
 

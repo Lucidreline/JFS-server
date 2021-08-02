@@ -19,9 +19,13 @@ const birthDateFormatter = (rawBirthDate) => {
 }
 
 const formatStudentFromCsv = (rawStudent) => {
+  // FIXME add null to values that don't exsist like on name:
   const formattedStudent = {
     basicInfo: {
-      name: lnfNameFormatter(rawStudent['Full Name (LNF)']),
+      name: rawStudent['Full Name (LNF)']
+        ? lnfNameFormatter(rawStudent['Full Name (LNF)'])
+        : null,
+
       address: {
         fullStreet: rawStudent['Student Full Street'],
         unitNumber: rawStudent['Student Unit Number'],
