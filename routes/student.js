@@ -14,7 +14,16 @@ router.post('/new-student', async (req, res) => {
   })
 
   await newStudent.save()
-  res.status(201).send(newStudent)
+  res.status(201).send(newStudent) // FIXME have this return json
+})
+
+// @route POST /api/new-students
+// @desc creates multiple students in database
+// @ access private (admin)
+router.post('/new-students', async (req, res) => {
+  console.log(req.body)
+
+  res.status(201).send('yas thank u')
 })
 
 module.exports = router
