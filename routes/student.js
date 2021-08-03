@@ -8,16 +8,17 @@ const router = express.Router()
 // @route POST /api/new-student
 // @desc creates single new student in database
 // @ access private (admin)
-router.post('/new-student', async (req, res) => {
+router.post('/new-student', (req, res) => {
   const { basicInfo, districtID } = req.body // TODO use formatCsvStudents
   const newStudent = new Student({
     basicInfo,
     districtID,
   })
 
-  await newStudent.save()
-  res.status(201).send(newStudent) // FIXME have this return json
-  // TODO add .next and .catch just like on /api/new-students
+  newStudent
+    .save()
+    .then(() => res.status(201).json({ student: newStudent }))
+    .catch((err) => res.status(500).json({ error: err.message }))
 })
 
 // @route POST /api/new-students

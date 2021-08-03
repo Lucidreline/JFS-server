@@ -27,7 +27,7 @@ const studentSchema = new mongoose.Schema({
 
     gradeLevel: Number,
     graduationYear: Number,
-    email: mongoose.SchemaTypes.Email, // FIXME make unique but multiple nulls are allowed
+    email: { type: mongoose.SchemaTypes.Email, sparse: true, unique: true },
     dateOfBirth: {
       year: Number,
       month: Number,
