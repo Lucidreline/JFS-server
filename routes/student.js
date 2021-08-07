@@ -5,6 +5,21 @@ const formatCsvStudents = require('../utils/formatCsvStudents')
 
 const router = express.Router()
 
+router.get('/student/id/:districtID', (req, res) => {
+  const { districtID } = req.params
+
+  Student.findOne({ districtID })
+    .then((result) => {
+      if (result == null)
+        return res.status(404).json({
+          error: `Student does not exsist with districtID ${districtID}`,
+        })
+
+      return res.status(200).json({ student: result })
+    })
+    .catch((err) => res.status(500).json({ error: err.message }))
+})
+
 // @route POST /api/new-student
 // @desc creates single new student in database
 // @ access private (admin)
@@ -31,7 +46,7 @@ router.post('/new-students', async (req, res) => {
 
   Student.create(formattedCsvStudents)
     .then(() => res.status(201).json(formattedCsvStudents))
-    .catch((err) => res.status(500).json({ err }))
+    .catch((err) => res.status(500).json({ error: err.message }))
 })
 
 module.exports = router
