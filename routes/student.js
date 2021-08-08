@@ -2,9 +2,13 @@ const express = require('express')
 const Student = require('../models/student')
 
 const formatCsvStudents = require('../utils/formatCsvStudents')
+const isQueriedStudent = require('../utils/isQueriedStudent')
 
 const router = express.Router()
 
+// @route GET /api/student/id/:districtID
+// @desc searches for single student by districtID
+// @ access private (admin)
 router.get('/student/id/:districtID', (req, res) => {
   const { districtID } = req.params
 
@@ -18,6 +22,20 @@ router.get('/student/id/:districtID', (req, res) => {
       return res.status(200).json({ student: result })
     })
     .catch((err) => res.status(500).json({ error: err.message }))
+})
+
+// @route GET /api/student/id/:districtID
+// @desc searches for single student by districtID
+// @ access private (admin)
+router.get('/students/search/:query', (req, res) => {
+  const { query } = req.params
+
+  Student.find().then((allStudents) => {
+    const filteredStudents = allStudents.filter((student) =>
+      isQueriedStudent(student, query),
+    )
+    res.status(200).json({ students: filteredStudents })
+  })
 })
 
 // @route POST /api/new-student
