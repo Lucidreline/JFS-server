@@ -30,12 +30,14 @@ router.get('/student/id/:districtID', (req, res) => {
 router.get('/students/search/:query', (req, res) => {
   const { query } = req.params
 
-  Student.find().then((allStudents) => {
-    const filteredStudents = allStudents.filter((student) =>
-      isQueriedStudent(student, query),
-    )
-    res.status(200).json({ students: filteredStudents })
-  })
+  Student.find()
+    .then((allStudents) => {
+      const filteredStudents = allStudents.filter((student) =>
+        isQueriedStudent(student, query),
+      )
+      res.status(200).json({ students: filteredStudents })
+    })
+    .catch((err) => res.status(500).json({ error: err.message }))
 })
 
 // @route POST /api/new-student
